@@ -8,7 +8,9 @@ namespace BehavioralSimulator
 {
     class Program
     {
-        List<Instruction> instructions = new List<Instruction>();
+        public static List<Instruction> instructions = new List<Instruction>();
+        public static List<int> register = new List<int>();
+        public static int counter = 0;
         static void Main(string[] args)
         {
             Input();
@@ -23,7 +25,15 @@ namespace BehavioralSimulator
 
         private static void Process()
         {
-            
+            for (int i = 0; i < register.Count; i++)
+            {
+                register[i] = 0;
+            }
+
+            while (instructions[counter].isNotHalt())
+            {
+                instructions[counter].Execute();
+            }
         }
 
         private static void Input()
@@ -42,7 +52,12 @@ namespace BehavioralSimulator
 
         private static void SplitText(string text)
         {
-            throw new NotImplementedException();
+            string Opcode = text.Substring(0,3);
+            string RegA = text.Substring(3, 3);
+            string RegB = text.Substring(6, 3);
+            string Empty = text.Substring(9, 13);
+            string RegDest = text.Substring(22, 3);
+            instructions.Add(new Instruction(Opcode, RegA, RegB, Empty, RegDest));
         }
 
         private static string[] ReadFromFile()
