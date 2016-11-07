@@ -38,35 +38,35 @@ namespace BehavioralSimulator
             }
         }
 
-        public string RegA
+        public int RegA
         {
             get
             {
-                return field2;
+                return BinToDec(field2);
             }
         }
 
-        public string RegB
+        public int RegB
         {
             get
             {
-                return field3;
+                return BinToDec(field3);
             }
         }
 
-        public string DestRsg
+        public int DestRsg
         {
             get
             {
-                return field4;
+                return BinToDec(field4);
             }
         }
 
-        public string OffsetField
+        public int OffsetField
         {
             get
             {
-                return field4 + field5;
+                return BinToDec(field4 + field5);
             }
         }
 
@@ -81,12 +81,21 @@ namespace BehavioralSimulator
 
         public void Execute()
         {
+ 
+            int RegDest = Program.register[DestRsg];
+            int RB = Program.register[RegB];
+            int RA = Program.register[RegA];
+            int OffsetF = Program.register[OffsetField];
+            Program.counter++;
+
             switch (OpCode)
             {
                 case ADD:
-
+                    RegDest = RA + RB;
                     break;
                 case NAND:
+
+                    //RegDest = RA & RB;
 
                     break;
                 case LW:
@@ -96,6 +105,10 @@ namespace BehavioralSimulator
 
                     break;
                 case BEQ:
+                    if (RA == RB)
+                    {
+                        Program.counter = Program.counter + OffsetF + 1;
+                    }
 
                     break;
                 case JALR:
@@ -105,11 +118,15 @@ namespace BehavioralSimulator
 
                     break;
             }
+            
+
         }
 
         public int BinToDec(string binary)
-        {
-            return 0;
+        {         
+            string dec = Convert.ToInt32(binary, 2).ToString();
+            int value = Int32.Parse(dec);
+            return value;
         }
 
         public bool isNotHalt()
