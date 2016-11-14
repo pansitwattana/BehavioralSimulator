@@ -20,7 +20,8 @@ namespace BehavioralSimulator
             {
                 if(value >= 0)
                     counter = value;
-                Console.WriteLine("Error address is less than zero");
+                else
+                    Console.WriteLine("Error address is less than zero");
             }
         }
 
@@ -64,7 +65,7 @@ namespace BehavioralSimulator
             
         }
 
-        private static int BinToDec(string text)
+        public static int BinToDec(string text)
         {
             string dec = Convert.ToInt32(text, 2).ToString();
             int value = Int32.Parse(dec);
