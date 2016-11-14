@@ -14,6 +14,7 @@ namespace BehavioralSimulator
         public const string JALR = "101";
         public const string HALT = "110";
         public const string NOOP = "111";
+        public const string HALTFULL = "1100000000000000000000000";
 
         public Instruction(string opcode, string regA, string regB, string offset, string regDest)
         {
@@ -81,12 +82,15 @@ namespace BehavioralSimulator
 
         public void Execute()
         {
- 
-            int RegDest = Program.register[DestRsg];
-            int RB = Program.register[RegB];
-            int RA = Program.register[RegA];
-            int OffsetF = Program.register[OffsetField];
-            Program.counter++;
+            
+            //How to Set:
+            //Register.Current.Set(regAddr, value);
+
+            int RegDest = Register.Current.Get(DestRsg);
+            int RB = Register.Current.Get(RegB);
+            int RA = Register.Current.Get(RegA);
+            int OffsetF = Register.Current.Get(OffsetField);
+            Program.Counter++;
 
             switch (OpCode)
             {
@@ -107,7 +111,7 @@ namespace BehavioralSimulator
                 case BEQ:
                     if (RA == RB)
                     {
-                        Program.counter = Program.counter + OffsetF + 1;
+                        Program.Counter = Program.Counter + OffsetF + 1;
                     }
 
                     break;
@@ -131,7 +135,7 @@ namespace BehavioralSimulator
 
         public bool isNotHalt()
         {
-            return InstSet != "1100000000000000000000000";
+            return InstSet != HALTFULL;
         }
     }
 }

@@ -10,41 +10,65 @@ namespace BehavioralSimulator
     class Program
     {
         public static List<Instruction> instructions = new List<Instruction>();
-        public static List<int> register = new List<int>();
-        public static int counter = 0;
+
+        private static int counter;
+
+        public static int Counter
+        {
+            get { return counter; }
+            set
+            {
+                if(value >= 0)
+                    counter = value;
+                Console.WriteLine("Error address is less than zero");
+            }
+        }
+
+
         static void Main(string[] args)
         {
             Input(args);
             Process();
-            Output();
         }
-
-        private static void Output()
-        {
-            
-        }
-
+        
         private static void Process()
         {
-            for (int i = 0; i < register.Count; i++)
-            {
-                register[i] = 0;
-            }
+            Counter = 0;
+            Register.Current.Initial();
+            Register.Current.Print();
 
-            while (instructions[counter].isNotHalt())
+            while (instructions[Counter].isNotHalt())
             {
-                instructions[counter].Execute();
+                instructions[Counter].Execute();
+                Register.Current.Print();
             }
         }
 
         private static void Input(string[] args)
         {
             string[] textsFromFile = ReadFromFile(args);
+            int count = 0;
             foreach (string text in textsFromFile)
             {
+                count++;
                 SplitText(DecToBin(text));
                 Console.WriteLine(DecToBin(text));
+                if (text == Instruction.HALTFULL)
+                    break;
             }
+
+            for (int i = count; i < textsFromFile.Length; i++)
+            {
+                int value = BinToDec(textsFromFile[i]);
+            }
+            
+        }
+
+        private static int BinToDec(string text)
+        {
+            string dec = Convert.ToInt32(text, 2).ToString();
+            int value = Int32.Parse(dec);
+            return value;
         }
 
         private static string DecToBin(string text)
@@ -77,22 +101,12 @@ namespace BehavioralSimulator
         private static string[] ReadFromFile(string[] args)
         {
             string[] lines = System.IO.File.ReadAllLines(@args[0]);
-            //TextReader input = Console.In;
-            //if (args.Any())
-            //{
-            //    var path = args[0];
-            //    if (File.Exists(path))
-            //    {
-            //        input = File.OpenText(path);
+            return lines;   
+        }
 
-            //    }
-            //    for (string line; (line = input.ReadLine()) != null;)
-            //    {
-            //        SplitText(line);
-            //    }
-            //}
-            return lines;
-            
+        public static void End(int exitCode)
+        {
+            //search how to exd program while run
         }
     }
 }
