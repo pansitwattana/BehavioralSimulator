@@ -18,13 +18,13 @@ namespace BehavioralSimulator
 
         public void Set(int address, int value)
         {
-            if(address == 0)
+            if (address == 0)
             {
                 Console.WriteLine("Error you can't set to register 0");
                 return;
             }
 
-            if(address > 7)
+            if (address > 7)
             {
                 Console.WriteLine("Error there are only 8 registers");
                 return;
@@ -41,7 +41,20 @@ namespace BehavioralSimulator
 
         public void Print()
         {
+            Console.WriteLine("PC" + Program.Counter);
+            Console.WriteLine("  " + "memory:");
+            for (int i = 0; i < Program.instructions.Count; i++)
+            {
 
+                Console.WriteLine("        " + "mem[" + i + "]" + Program.BinToDec(Program.instructions[i].InstSet));
+            }
+            //registers[i] instructions[i]
+            Console.WriteLine("  "+"registor:");
+            for (int i = 0; i < 8; i++)
+            {
+          
+                Console.WriteLine("        "+"reg[" + i + "]" + registers[i]);
+            }
         }
 
         public void Initial()
