@@ -95,17 +95,19 @@ namespace BehavioralSimulator
             switch (OpCode)
             {
                 case ADD:
-                    RegDest = RA + RB;
+                    Register.Current.Set(RegDest, RA + RB);
                     break;
                 case NAND:
-                    RegDest = DectoBin(RA, RB);
-                   //RegDest = ~(RA & RB);
+                    Register.Current.Set(RegDest, ~(RA & RB));
+                    //RegDest = ~(RA & RB);
 
                     break;
                 case LW:
+                    //Register.Current.Set(RegDest, value);
 
                     break;
                 case SW:
+                    //Register.Current.Set(regAddr, value);
 
                     break;
                 case BEQ:
@@ -133,14 +135,7 @@ namespace BehavioralSimulator
             return value;
         }
 
-        public int DectoBin(int RegA,int RegB)
-        {
-            // RegDest = ~(RA & RB);
-            int RegDest = 0;
-            string binary = Convert.ToString(RegA, 2);
-            string binary1 = Convert.ToString(RegB, 2);
-            return RegDest;
-        }
+       
         public bool isNotHalt()
         {
             return InstSet != HALTFULL;
