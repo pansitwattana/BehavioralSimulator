@@ -94,8 +94,8 @@ namespace BehavioralSimulator
                     RegDest = RA + RB;
                     break;
                 case NAND:
-
-                    //RegDest = RA & RB;
+                    RegDest = DectoBin(RA, RB);
+                   //RegDest = ~(RA & RB);
 
                     break;
                 case LW:
@@ -129,6 +129,14 @@ namespace BehavioralSimulator
             return value;
         }
 
+        public int DectoBin(int RegA,int RegB)
+        {
+            // RegDest = ~(RA & RB);
+            int RegDest = 0;
+            string binary = Convert.ToString(RegA, 2);
+            string binary1 = Convert.ToString(RegB, 2);
+            return RegDest;
+        }
         public bool isNotHalt()
         {
             return InstSet != "1100000000000000000000000";
