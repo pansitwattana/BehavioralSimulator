@@ -45,7 +45,7 @@ namespace BehavioralSimulator
             Console.WriteLine("  " + "memory:");
             for (int i = 0; i < Program.instructions.Count; i++)
             {
-
+         
                 Console.WriteLine("        " + "mem[" + i + "]" + Program.BinToDec(Program.instructions[i].InstSet));
             }
             //registers[i] instructions[i]
