@@ -11,6 +11,8 @@ namespace BehavioralSimulator
     {
         public static List<Instruction> instructions = new List<Instruction>();
 
+        public static List<int> memory = new List<int>();
+
         private static int counter;
 
         public static int Counter
@@ -52,17 +54,18 @@ namespace BehavioralSimulator
             foreach (string text in textsFromFile)
             {
                 count++;
-                SplitText(DecToBin(text));
-                Console.WriteLine(DecToBin(text));
-                if (text == Instruction.HALTFULL)
+                string binaryInput = DecToBin(text);
+                SplitText(binaryInput);
+                memory.Add(0);
+                Console.WriteLine(binaryInput);
+                if (binaryInput == Instruction.HALTFULL)
                     break;
             }
-
+            Console.WriteLine("Memory Section");
             for (int i = count; i < textsFromFile.Length; i++)
             {
-                int value = BinToDec(textsFromFile[i]);
+                memory.Add(int.Parse(textsFromFile[i])); 
             }
-            
         }
 
         public static int BinToDec(string text)

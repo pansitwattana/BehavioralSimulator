@@ -104,7 +104,7 @@ namespace BehavioralSimulator
                     break;
                 case LW:
                     //Register.Current.Set(RegDest, value);
-
+                    int value = Program.memory[8];
                     break;
                 case SW:
                     //Register.Current.Set(regAddr, value);
