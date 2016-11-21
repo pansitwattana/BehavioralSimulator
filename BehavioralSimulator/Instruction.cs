@@ -30,7 +30,6 @@ namespace BehavioralSimulator
         private string field3 { get; set; }
         private string field4 { get; set; }
         private string field5 { get; set; }
-
         public string OpCode
         {
             get
@@ -59,7 +58,7 @@ namespace BehavioralSimulator
         {
             get
             {
-                return BinToDec(field4);
+                return BinToDec(field5);
             }
         }
 
@@ -67,7 +66,7 @@ namespace BehavioralSimulator
         {
             get
             {
-                return BinToDec(field4 + field5);
+                return BinToDecNegative(field4 + field5);
             }
         }
 
@@ -90,15 +89,17 @@ namespace BehavioralSimulator
             //int RB = Register.Current.Get(RegB);
             //int RA = Register.Current.Get(RegA);
            
-            Program.Counter++;
+            
 
             switch (OpCode)
             {
                 case ADD:
                     Register.Current.Set(DestRsg, Register.Current.Get(RegA) + Register.Current.Get(RegB));
+                    Program.Counter++;
                     break;
                 case NAND:
                     Register.Current.Set(DestRsg, ~(Register.Current.Get(RegA) & Register.Current.Get(RegB)));
+                    Program.Counter++;
                     //RegDest = ~(RA & RB);
 
                     break;
@@ -106,10 +107,12 @@ namespace BehavioralSimulator
                     //Register.Current.Set(RegDest, value);
                     // int value = Program.memory[8];
                     Register.Current.Set(RegB, Program.memory[Register.Current.Get(RegA) + OffsetField]);
+                    Program.Counter++;
                     break;
                 case SW:
                     //Register.Current.Set(regAddr, value);
-                    Register.Current.Set(Register.Current.Get(RegA) + OffsetField, RegB);
+                    Program.SetMemory(Register.Current.Get(RegA) + OffsetField, Register.Current.Get(RegB));
+                    Program.Counter++;
 
                     break;
                 case BEQ:
@@ -117,7 +120,10 @@ namespace BehavioralSimulator
                     {
                         Program.Counter = Program.Counter + OffsetField + 1;
                     }
-
+                    else
+                    {
+                        Program.Counter++;
+                    }
                     break;
                 case JALR:
                     int NextLabel = Program.Counter++;
@@ -137,21 +143,57 @@ namespace BehavioralSimulator
                     Program.Counter ++;
                     break;
             }
-            
 
+            Program.instuctionTotal++;
         }
 
-        public int BinToDec(string binary)
-        {         
-            string dec = Convert.ToInt32(binary, 2).ToString();
+        public static int BinToDec(string text)
+        {
+            string dec = Convert.ToInt32(text, 2).ToString();
             int value = Int32.Parse(dec);
             return value;
         }
 
-       
+        public static int BinToDecNegative(string text)
+        {
+            if (text[0] == '0')
+            {
+                string dec = Convert.ToInt32(text, 2).ToString();
+                int value = Int32.Parse(dec);
+                return value;
+            }
+            else
+            {
+                string text1 = "";
+                for (int i = 0; i < text.Length; i++)
+                {
+                    if (text[i] == '0')
+                    {
+                        text1 += '1';
+
+                    }
+                    else
+                    {
+                        text1 += '0';
+                    }
+
+                }
+                string dec = Convert.ToInt32(text1, 2).ToString();
+                int value1 = Int32.Parse(dec);
+                return -(value1 + 1);
+
+
+            }
+
+        }
         public bool isNotHalt()
         {
             return InstSet != HALTFULL;
+        }
+
+        public override string ToString()
+        {
+            return InstSet;
         }
     }
 }

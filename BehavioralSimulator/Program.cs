@@ -13,6 +13,8 @@ namespace BehavioralSimulator
 
         public static List<int> memory = new List<int>();
 
+        public static int instuctionTotal = 0;
+
         private static int counter;
 
         public static int Counter
@@ -20,7 +22,7 @@ namespace BehavioralSimulator
             get { return counter; }
             set
             {
-                if(value >= 0 && value < instructions.Count)
+                if(value >= 0 && value <= instructions.Count)
                     counter = value;
                 else
                 {
@@ -31,6 +33,17 @@ namespace BehavioralSimulator
             }
         }
 
+        public static void SetMemory(int addr, int value)
+        {
+            if(addr >= memory.Count)
+            {
+                for (int i = 0; i <= addr - memory.Count; i++)
+                {
+                    memory.Add(0);
+                }
+            }
+            memory[addr] = value;
+        }
 
         static void Main(string[] args)
         {
@@ -49,6 +62,12 @@ namespace BehavioralSimulator
                 instructions[Counter].Execute();
                 Register.Current.Print();
             }
+            Console.WriteLine("end state");
+            Console.WriteLine("machine halted");
+            Console.WriteLine("total of " + (instuctionTotal + 1) + " instuctions executed");
+            Console.WriteLine("final state of machine");
+            Program.counter++;
+            Register.Current.Print();
         }
 
         private static void Input(string[] args)
@@ -57,52 +76,29 @@ namespace BehavioralSimulator
             int count = 0;
             foreach (string text in textsFromFile)
             {
+                
+                if (int.Parse(text) < 32767)
+                    break;
                 count++;
                 string binaryInput = DecToBin(text);
                 SplitText(binaryInput);
                 memory.Add(0);
                 Console.WriteLine(binaryInput);
-                if (binaryInput == Instruction.HALTFULL)
-                    break;
             }
             Console.WriteLine("Memory Section");
             for (int i = count; i < textsFromFile.Length; i++)
             {
-                memory.Add(int.Parse(textsFromFile[i])); 
+                int value = int.Parse(textsFromFile[i]);
+                memory.Add(value);
+                Console.WriteLine(value);
             }
         }
 
         public static int BinToDec(string text)
         {
-            if (text[0] == '0')
-            {
-                string dec = Convert.ToInt32(text, 2).ToString();
-                int value = Int32.Parse(dec);
-                return value;
-            }
-            else
-            {
-                string text1 = "";
-                for (int i = 0; i < text.Length; i ++)
-                {
-                    if (text[i] == '0')
-                    {
-                        text1 += '1';
-                        
-                    }
-                    else
-                    {
-                        text1 += '0';
-                    }
-                   
-                }
-                string dec = Convert.ToInt32(text1, 2).ToString();
-                int value1 = Int32.Parse(dec);
-                return value1+1;
-
-
-            }
-            
+            string dec = Convert.ToInt32(text, 2).ToString();
+            int value = Int32.Parse(dec);
+            return value;
         }
 
         private static string DecToBin(string text)

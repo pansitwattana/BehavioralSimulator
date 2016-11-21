@@ -18,6 +18,12 @@ namespace BehavioralSimulator
 
         public void Set(int address, int value)
         {
+            if (address < 0)
+            {
+                Console.WriteLine("Error you can set only register [0-7]");
+                return;
+            }
+
             if (address == 0)
             {
                 Console.WriteLine("Error you can't set to register 0");
@@ -48,10 +54,16 @@ namespace BehavioralSimulator
          
                 Console.WriteLine("        " + "mem[" + i + "]" + Program.BinToDec(Program.instructions[i].InstSet));
             }
+
+            for (int i = Program.instructions.Count; i < Program.memory.Count; i++)
+            {
+                Console.WriteLine("        " + "mem[" + i + "]" + Program.memory[i]);
+            }
+
             //registers[i] instructions[i]
             Console.WriteLine("  "+"registor:");
             for (int i = 0; i < 8; i++)
-            {
+            {   
           
                 Console.WriteLine("        "+"reg[" + i + "]" + registers[i]);
             }
