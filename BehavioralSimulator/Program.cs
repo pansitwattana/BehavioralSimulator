@@ -70,9 +70,35 @@ namespace BehavioralSimulator
 
         public static int BinToDec(string text)
         {
-            string dec = Convert.ToInt32(text, 2).ToString();
-            int value = Int32.Parse(dec);
-            return value;
+            if (text[0] == '0')
+            {
+                string dec = Convert.ToInt32(text, 2).ToString();
+                int value = Int32.Parse(dec);
+                return value;
+            }
+            else
+            {
+                string text1 = "";
+                for (int i = 0; i < text.Length; i ++)
+                {
+                    if (text[i] == '0')
+                    {
+                        text1 += '1';
+                        
+                    }
+                    else
+                    {
+                        text1 += '0';
+                    }
+                   
+                }
+                string dec = Convert.ToInt32(text1, 2).ToString();
+                int value1 = Int32.Parse(dec);
+                return value1+1;
+
+
+            }
+            
         }
 
         private static string DecToBin(string text)
