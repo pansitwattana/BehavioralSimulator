@@ -105,7 +105,7 @@ namespace BehavioralSimulator
                 case LW:
                     //Register.Current.Set(RegDest, value);
                     // int value = Program.memory[8];
-                    Register.Current.Set(RegB, Register.Current.Get(RegA) + OffsetField);
+                    Register.Current.Set(RegB, Program.memory[Register.Current.Get(RegA) + OffsetField]);
                     break;
                 case SW:
                     //Register.Current.Set(regAddr, value);
@@ -120,10 +120,21 @@ namespace BehavioralSimulator
 
                     break;
                 case JALR:
-
+                    int NextLabel = Program.Counter++;
+                    if(Register.Current.Get(RegA) == Register.Current.Get(RegB))
+                    {
+                        Register.Current.Set(RegB, NextLabel);
+                        Program.Counter = NextLabel;
+                    }
+                    else
+                    {
+                        Register.Current.Set(RegB, NextLabel);
+                        Program.Counter = Register.Current.Get(RegA);
+                    }
+                    
                     break;
                 case NOOP:
-
+                    Program.Counter ++;
                     break;
             }
             
