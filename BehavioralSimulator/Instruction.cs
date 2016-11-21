@@ -86,34 +86,36 @@ namespace BehavioralSimulator
             //How to Set:
             //Register.Current.Set(regAddr, value);
 
-            int RegDest = Register.Current.Get(DestRsg);
-            int RB = Register.Current.Get(RegB);
-            int RA = Register.Current.Get(RegA);
-            int OffsetF = Register.Current.Get(OffsetField);
+            //find value in Reg
+            //int RB = Register.Current.Get(RegB);
+            //int RA = Register.Current.Get(RegA);
+           
             Program.Counter++;
 
             switch (OpCode)
             {
                 case ADD:
-                    Register.Current.Set(RegDest, RA + RB);
+                    Register.Current.Set(DestRsg, Register.Current.Get(RegA) + Register.Current.Get(RegB));
                     break;
                 case NAND:
-                    Register.Current.Set(RegDest, ~(RA & RB));
+                    Register.Current.Set(DestRsg, ~(Register.Current.Get(RegA) & Register.Current.Get(RegB)));
                     //RegDest = ~(RA & RB);
 
                     break;
                 case LW:
                     //Register.Current.Set(RegDest, value);
-                    int value = Program.memory[8];
+                    // int value = Program.memory[8];
+                    Register.Current.Set(RegB, Register.Current.Get(RegA) + OffsetField);
                     break;
                 case SW:
                     //Register.Current.Set(regAddr, value);
+                    Register.Current.Set(Register.Current.Get(RegA) + OffsetField, RegB);
 
                     break;
                 case BEQ:
-                    if (RA == RB)
+                    if (Register.Current.Get(RegA) == Register.Current.Get(RegB))
                     {
-                        Program.Counter = Program.Counter + OffsetF + 1;
+                        Program.Counter = Program.Counter + OffsetField + 1;
                     }
 
                     break;
