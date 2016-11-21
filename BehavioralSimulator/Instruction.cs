@@ -120,10 +120,21 @@ namespace BehavioralSimulator
 
                     break;
                 case JALR:
-
+                    int NextLabel = Program.Counter++;
+                    if(Register.Current.Get(RegA) == Register.Current.Get(RegB))
+                    {
+                        Register.Current.Set(RegB, NextLabel);
+                        Program.Counter = NextLabel;
+                    }
+                    else
+                    {
+                        Register.Current.Set(RegB, NextLabel);
+                        Program.Counter = Register.Current.Get(RegA);
+                    }
+                    
                     break;
                 case NOOP:
-
+                    Program.Counter ++;
                     break;
             }
             
