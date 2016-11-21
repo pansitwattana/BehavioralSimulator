@@ -20,10 +20,14 @@ namespace BehavioralSimulator
             get { return counter; }
             set
             {
-                if(value >= 0)
+                if(value >= 0 && value < instructions.Count)
                     counter = value;
                 else
-                    Console.WriteLine("Error address is less than zero");
+                {
+                    Console.WriteLine("Error address is not in range(0-"+instructions.Count+")");
+                    Environment.Exit(1);
+                }
+                    
             }
         }
 
@@ -94,7 +98,7 @@ namespace BehavioralSimulator
 
         private static void SplitText(string text)
         {
-            string Opcode = text.Substring(0,3);
+            string Opcode = text.Substring(0, 3);
             string RegA = text.Substring(3, 3);
             string RegB = text.Substring(6, 3);
             string Empty = text.Substring(9, 13);
