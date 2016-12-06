@@ -37,7 +37,8 @@ namespace BehavioralSimulator
         {
             if(addr >= memory.Count)
             {
-                for (int i = 0; i <= addr - memory.Count; i++)
+                int arrcount = memory.Count;
+                for (int i = 0; i <= addr - arrcount; i++)
                 {
                     memory.Add(0);
                 }
@@ -59,6 +60,7 @@ namespace BehavioralSimulator
 
             while (instructions[Counter].isNotHalt())
             {
+
                 instructions[Counter].Execute();
                 Register.Current.Print();
             }
@@ -137,6 +139,20 @@ namespace BehavioralSimulator
         public static void End(int exitCode)
         {
             //search how to exd program while run
+        }
+
+
+        //check overflow
+        public static bool CheckInt32(int input)
+        {
+            if (input > 32767 || input < -32768)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

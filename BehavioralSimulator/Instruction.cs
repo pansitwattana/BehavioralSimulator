@@ -94,7 +94,16 @@ namespace BehavioralSimulator
             switch (OpCode)
             {
                 case ADD:
-                    Register.Current.Set(DestRsg, Register.Current.Get(RegA) + Register.Current.Get(RegB));
+                   
+                    if(CheckInt32(Register.Current.Get(RegA) + Register.Current.Get(RegB)))
+                    {
+                        Console.WriteLine("Overflow");
+                        Environment.Exit(1);
+                    }
+                    else
+                    {
+                        Register.Current.Set(DestRsg, Register.Current.Get(RegA) + Register.Current.Get(RegB));
+                    }
                     Program.Counter++;
                     break;
                 case NAND:
@@ -126,7 +135,7 @@ namespace BehavioralSimulator
                     }
                     break;
                 case JALR:
-                    int NextLabel = Program.Counter++;
+                    int NextLabel = Program.Counter + 1;
                     if(Register.Current.Get(RegA) == Register.Current.Get(RegB))
                     {
                         Register.Current.Set(RegB, NextLabel);
@@ -194,6 +203,20 @@ namespace BehavioralSimulator
         public override string ToString()
         {
             return InstSet;
+        }
+
+
+        //check overflow
+         public static bool CheckInt32(int input)
+        {
+            if (input > 32767 || input < -32768)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
