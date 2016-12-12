@@ -46,6 +46,11 @@ namespace BehavioralSimulator
             memory[addr] = value;
         }
 
+        public static int GetMemory(int addr)
+        {
+            return memory[addr];
+        }
+
         static void Main(string[] args)
         {
             Input(args);
@@ -58,9 +63,8 @@ namespace BehavioralSimulator
             Register.Current.Initial();
             Register.Current.Print();
 
-            while (instructions[Counter].isNotHalt())
+            while (GetInstructions(Counter).isNotHalt())
             {
-
                 instructions[Counter].Execute();
                 Register.Current.Print();
             }
@@ -70,6 +74,24 @@ namespace BehavioralSimulator
             Console.WriteLine("final state of machine");
             Program.counter++;
             Register.Current.Print();
+        }
+
+        private static Instruction GetInstructions(int counter)
+        {
+            if (counter < 0)
+            {
+                Console.WriteLine("Error branch to invalid address");
+                Environment.Exit(1);
+            }
+
+            if(counter < instructions.Count)
+                return instructions[counter];
+            else
+            {
+                Console.WriteLine("Error branch to invalid address");
+                Environment.Exit(1);
+                return null;
+            }
         }
 
         private static void Input(string[] args)
