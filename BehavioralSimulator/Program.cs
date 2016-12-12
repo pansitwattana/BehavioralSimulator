@@ -79,7 +79,7 @@ namespace BehavioralSimulator
                 instructions[Counter].Execute();
                 Register.Current.Print();
             }
-            Console.WriteLine("end state");
+
             Console.WriteLine("machine halted");
             Console.WriteLine("total of " + (instuctionTotal + 1) + " instuctions executed");
             Console.WriteLine("final state of machine");
