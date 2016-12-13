@@ -86,17 +86,7 @@ namespace BehavioralSimulator
         #endregion
 
         public void Execute()
-        {
-            
-            //How to Set:
-            //Register.Current.Set(regAddr, value);
-
-            //find value in Reg
-            //int RB = Register.Current.Get(RegB);
-            //int RA = Register.Current.Get(RegA);
-           
-            
-
+        { 
             switch (OpCode)
             {
                 case ADD:
@@ -115,20 +105,14 @@ namespace BehavioralSimulator
                 case NAND:
                     Register.Current.Set(DestRsg, ~(Register.Current.Get(RegA) & Register.Current.Get(RegB)));
                     Program.Counter++;
-                    //RegDest = ~(RA & RB);
-
                     break;
                 case LW:
-                    //Register.Current.Set(RegDest, value);
-                    // int value = Program.memory[8];
                     Register.Current.Set(RegB, Program.memory[Register.Current.Get(RegA) + OffsetField]);
                     Program.Counter++;
                     break;
                 case SW:
-                    //Register.Current.Set(regAddr, value);
                     Program.SetMemory(Register.Current.Get(RegA) + OffsetField, Register.Current.Get(RegB));
                     Program.Counter++;
-
                     break;
                 case BEQ:
                     if (Register.Current.Get(RegA) == Register.Current.Get(RegB))
@@ -141,7 +125,6 @@ namespace BehavioralSimulator
                     }
                     break;
                 case JALR:
-
                     if(Jalr_Addr != Register.Current.Get(RegA))
                     {
                         Jalr_Addr = Register.Current.Get(RegA);
@@ -179,13 +162,11 @@ namespace BehavioralSimulator
                         Register.Current.Set(RegB, NextLabel);
                         Program.Counter = Register.Current.Get(RegA);
                     }
-                    
                     break;
                 case NOOP:
                     Program.Counter ++;
                     break;
             }
-
             Program.instuctionTotal++;
         }
 
@@ -240,9 +221,9 @@ namespace BehavioralSimulator
 
 
         //check overflow
-         public static bool CheckInt32(int input)
+         public static bool CheckInt32(Int32 input)
         {
-            if (input > 32767 || input < -32768)
+            if (input > int.MaxValue || input < int.MinValue)
             {
                 return true;
             }

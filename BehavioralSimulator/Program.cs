@@ -46,8 +46,23 @@ namespace BehavioralSimulator
             memory[addr] = value;
         }
 
+        public static int GetMemory(int addr)
+        {
+            return memory[addr];
+        }
+
         static void Main(string[] args)
         {
+            if(args.Length != 1)
+            {
+                Console.WriteLine("error: usage");
+                Environment.Exit(1);
+            }
+            if(args == null)
+            {
+                Console.WriteLine("error: can't open file");
+                Environment.Exit(1);
+            }
             Input(args);
             Process();
         }
@@ -55,21 +70,53 @@ namespace BehavioralSimulator
         private static void Process()
         {
             Counter = 0;
+            PrintMemory();
             Register.Current.Initial();
             Register.Current.Print();
 
-            while (instructions[Counter].isNotHalt())
+            while (GetInstructions(Counter).isNotHalt())
             {
-
                 instructions[Counter].Execute();
                 Register.Current.Print();
             }
-            Console.WriteLine("end state");
+
             Console.WriteLine("machine halted");
             Console.WriteLine("total of " + (instuctionTotal + 1) + " instuctions executed");
             Console.WriteLine("final state of machine");
             Program.counter++;
             Register.Current.Print();
+        }
+
+        private static void PrintMemory()
+        {
+            for (int i = 0; i < instructions.Count; i++)
+            {
+                Console.WriteLine("memory[" + i + "] = " + BinToDec(instructions[i].InstSet));
+            }
+            for (int i = instructions.Count; i < memory.Count; i++)
+            {
+                Console.WriteLine("memory[" + i + "] = " + memory[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        private static Instruction GetInstructions(int counter)
+        {
+            if (counter < 0)
+            {
+                Console.WriteLine("Error branch to invalid address");
+                Environment.Exit(1);
+            }
+
+            if(counter < instructions.Count)
+                return instructions[counter];
+            else
+            {
+                Console.WriteLine("Error branch to invalid address");
+                Environment.Exit(1);
+                return null;
+            }
         }
 
         private static void Input(string[] args)
@@ -85,14 +132,12 @@ namespace BehavioralSimulator
                 string binaryInput = DecToBin(text);
                 SplitText(binaryInput);
                 memory.Add(0);
-                Console.WriteLine(binaryInput);
             }
-            Console.WriteLine("Memory Section");
+
             for (int i = count; i < textsFromFile.Length; i++)
             {
                 int value = int.Parse(textsFromFile[i]);
                 memory.Add(value);
-                Console.WriteLine(value);
             }
         }
 
@@ -134,25 +179,6 @@ namespace BehavioralSimulator
         {
             string[] lines = System.IO.File.ReadAllLines(@args[0]);
             return lines;   
-        }
-
-        public static void End(int exitCode)
-        {
-            //search how to exd program while run
-        }
-
-
-        //check overflow
-        public static bool CheckInt32(int input)
-        {
-            if (input > 32767 || input < -32768)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }
