@@ -208,9 +208,9 @@ namespace BehavioralSimulator
 
 
         //check overflow
-         public static bool CheckInt32(int input)
+         public static bool CheckInt32(int32 input)
         {
-            if (input > 32767 || input < -32768)
+            if (input > int.MaxValue || input < int.MinValue)
             {
                 return true;
             }

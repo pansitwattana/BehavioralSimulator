@@ -180,18 +180,5 @@ namespace BehavioralSimulator
             string[] lines = System.IO.File.ReadAllLines(@args[0]);
             return lines;   
         }
-
-        //check overflow
-        public static bool CheckInt32(int input)
-        {
-            if (input > 32767 || input < -32768)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }
