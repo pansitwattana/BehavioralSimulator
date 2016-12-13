@@ -18,6 +18,9 @@ namespace BehavioralSimulator
 
         private int Jalr_Addr = -10;
         private int Jalr_Count = 0;
+        public static int Jalr_MainCount = 0;
+        private int MaxLoop = 333;
+        
 
         public Instruction(string opcode, string regA, string regB, string offset, string regDest)
         {
@@ -129,9 +132,19 @@ namespace BehavioralSimulator
                     }else
                     {
                         Jalr_Count++;
+                       
                     }
 
+                    Jalr_MainCount++;
+
                     if (Jalr_Count >= 150)
+                    {
+
+                        Console.WriteLine("infinity Loop");
+                        Environment.Exit(1);
+                    }
+
+                    if (Jalr_MainCount >= MaxLoop)
                     {
 
                         Console.WriteLine("infinity Loop");
