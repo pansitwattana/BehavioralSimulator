@@ -47,26 +47,30 @@ namespace BehavioralSimulator
 
         public void Print()
         {
-            Console.WriteLine("PC" + Program.Counter);
-            Console.WriteLine("  " + "memory:");
+            Console.WriteLine("");
+            Console.WriteLine("@@@");
+            Console.WriteLine("state:");
+            Console.WriteLine("         PC " + Program.Counter);
+            Console.WriteLine("         " + "memory:");
             for (int i = 0; i < Program.instructions.Count; i++)
             {
          
-                Console.WriteLine("        " + "mem[" + i + "]" + Program.BinToDec(Program.instructions[i].InstSet));
+                Console.WriteLine("             " + "mem[" + i + "]" + Program.BinToDec(Program.instructions[i].InstSet));
             }
 
             for (int i = Program.instructions.Count; i < Program.memory.Count; i++)
             {
-                Console.WriteLine("        " + "mem[" + i + "]" + Program.memory[i]);
+                Console.WriteLine("             " + "mem[" + i + "]" + Program.memory[i]);
             }
 
             //registers[i] instructions[i]
-            Console.WriteLine("  "+"registor:");
+            Console.WriteLine("         "+"register:");
             for (int i = 0; i < 8; i++)
             {   
           
-                Console.WriteLine("        "+"reg[" + i + "]" + registers[i]);
+                Console.WriteLine("             "+"reg[" + i + "]" + registers[i]);
             }
+            Console.WriteLine("end state");
         }
 
         public void Initial()
